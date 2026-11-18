@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>電腦斷層攝影（有注射對比劑）行前必看須知</title>
+  <style>
+    :root {
+      --bg-outer: #e5eff7;
+      --bg-stage: #f2f8fc;
+      --surface: #ffffff;
+      --primary: #1d5b8c;
+      --primary-dark: #123e63;
+      --teal: #2a9d8f;
+      --teal-soft: #e6f5f3;
+      --mint: #2d8a4e;
+      --mint-bg: #edf8f1;
+      --mint-border: #a7DFba;
+      --coral: #d94f34;
+      --coral-bg: #fdf1ee;
+      --coral-border: #f4bcae;
+      --amber: #b4690e;
+      --amber-bg: #fff8eb;
+      --amber-border: #f3d494;
+      --text-main: #1b2a38;
+      --text-muted: #52667a;
+      --border: #d7e5f0;
+      --shadow: 0 14px 36px rgba(20, 56, 88, 0.12);
+      --font-scale: 1;
+    }
+
+    body.large-text {
+      --font-scale: 1.16;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: linear-gradient(160deg, #ddeaf5 0%, #eff5fa 100%);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.5;
+    }
+
+    .app-shell {
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+    }
+
+    .deck-frame {
+      width: 100%;
+      max-width: 450px;
+      min-height: min(860px, calc(100dvh - 24px));
+      max-height: calc(100dvh - 16px);
+      background: var(--bg-stage);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      background: var(--surface);
+      padding: 12px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .progress-track {
+      height: 6px;
+      background: #e2edf5;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 16.66%;
+      background: linear-gradient(90deg, var(--teal), var(--primary));
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    .top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .step-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      background: #f7fafd;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: all 0.2s ease;
+    }
+
+    .step-dot.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      transform: scale(1.08);
+    }
+
+    .step-dot.visited:not(.active) {
+      background: var(--teal-soft);
+      border-color: var(--teal);
+      color: var(--primary-dark);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-btn {
+      border: 1px solid var(--border);
+      background: #f7fafd;
+      color: var(--primary-dark);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.18s ease, border-color 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .pill-btn:hover {
+      background: #eaf3fa;
+    }
+
+    .pill-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* Audio Strip */
+    .audio-strip {
+      background: #eaf3fa;
+      padding: 7px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .audio-status {
+      font-size: 12px;
+      color: var(--primary-dark);
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .audio-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .audio-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--surface);
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .audio-btn.playing {
+      background: var(--teal);
+      color: #fff;
+    }
+
+    /* Slide Content Area */
+    .slide-viewport {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+
+    .slide-header {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      animation: fadeSlideUp 0.32s ease both;
+    }
+
+    .slide-badge {
+      align-self: flex-start;
+      background: var(--teal-soft);
+      color: var(--teal);
+      border: 1px solid rgba(42, 157, 143, 0.28);
+      font-size: calc(12px * var(--font-scale));
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+    }
+
+    .slide-title {
+      margin: 0;
+      font-size: calc(21px * var(--font-scale));
+      line-height: 1.32;
+      font-weight: 800;
+      color: var(--primary-dark);
+      letter-spacing: -0.01em;
+    }
+
+    /* Illustration Frame (cropped to remove empty 9:16 top/bottom bands cleanly) */
+    .art-stage {
+      width: 100%;
+      height: 222px;
+      background: #eff7fb;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      animation: fadeScaleIn 0.36s ease both;
+    }
+
+    .art-frame {
+      position: relative;
+      height: calc(100% / var(--span, 0.55));
+      aspect-ratio: 768 / 1376;
+      top: calc(-1 * var(--top, 0.25) / var(--span, 0.55) * 100%);
+      flex-shrink: 0;
+    }
+
+    .art-frame img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .slide6-card-label {
+      position: absolute;
+      left: 32%;
+      right: 13%;
+      top: 29.5%;
+      background: #f2f8fc;
+      border: 1px solid #cbe0ef;
+      border-radius: 10px;
+      padding: 6px 6px;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .slide6-card-label strong {
+      display: block;
+      font-size: 12px;
+      color: var(--primary-dark);
+      margin-bottom: 2px;
+    }
+
+    .slide6-card-label span {
+      display: block;
+      font-size: 10.5px;
+      line-height: 1.35;
+      color: var(--text-muted);
+    }
+
+    /* Key Point Cards (PPT Staggered Bullets) */
+    .cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 11px 13px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      box-shadow: 0 2px 8px rgba(29, 91, 140, 0.04);
+      animation: fadeSlideUp 0.36s ease both;
+    }
+
+    .info-card:nth-child(1) { animation-delay: 0.06s; }
+    .info-card:nth-child(2) { animation-delay: 0.14s; }
+    .info-card:nth-child(3) { animation-delay: 0.22s; }
+    .info-card:nth-child(4) { animation-delay: 0.30s; }
+
+    .info-card.tone-mint {
+      background: var(--mint-bg);
+      border-color: var(--mint-border);
+    }
+
+    .info-card.tone-coral {
+      background: var(--coral-bg);
+      border-color: var(--coral-border);
+    }
+
+    .info-card.tone-amber {
+      background: var(--amber-bg);
+      border-color: var(--amber-border);
+    }
+
+    .card-icon {
+      font-size: calc(19px * var(--font-scale));
+      line-height: 1.3;
+      flex-shrink: 0;
+    }
+
+    .card-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-heading {
+      font-size: calc(15.5px * var(--font-scale));
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 2px;
+    }
+
+    .tone-mint .card-heading { color: #1f6337; }
+    .tone-coral .card-heading { color: #a5311b; }
+    .tone-amber .card-heading { color: #8c4f05; }
+
+    .card-text {
+      margin: 0;
+      font-size: calc(14px * var(--font-scale));
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    .card-text strong {
+      color: var(--primary-dark);
+    }
+
+    .tone-coral .card-text strong { color: #9c2b16; }
+    .tone-amber .card-text strong { color: #7c4403; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .two-col .info-card {
+      flex-direction: column;
+      gap: 6px;
+      padding: 11px;
+    }
+
+    /* Action Buttons inside Slides */
+    .inline-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+      animation: fadeSlideUp 0.42s ease both;
+      animation-delay: 0.25s;
+    }
+
+    .action-chip {
+      flex: 1 1 auto;
+      border: 1.5px dashed var(--primary);
+      background: #f5faff;
+      color: var(--primary-dark);
+      border-radius: 12px;
+      padding: 9px 12px;
+      font-size: calc(13.5px * var(--font-scale));
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.18s ease;
+    }
+
+    .action-chip:hover {
+      background: #e5f1fc;
+    }
+
+    .action-chip.solid {
+      border-style: solid;
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #fff;
+    }
+
+    .action-chip.solid:hover {
+      background: #23867a;
+    }
+
+    /* Transcript toggle box */
+    .caption-box {
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 12px;
+      font-size: calc(13px * var(--font-scale));
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .caption-box summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--primary);
+      list-style: none;
+    }
+
+    .caption-box summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .caption-box p {
+      margin: 6px 0 0;
+      color: var(--text-main);
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 11px 16px calc(11px + env(safe-area-inset-bottom));
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .nav-btn {
+      flex: 1;
+      border: 1.5px solid var(--border);
+      background: #f7fafd;
+      color: var(--primary-dark);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: calc(16px * var(--font-scale));
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .nav-btn.primary {
+      flex: 1.45;
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .nav-btn.primary:hover:not(:disabled) {
+      background: var(--primary-dark);
+    }
+
+    .nav-btn.finish {
+      flex: 1.45;
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #fff;
+    }
+
+    /* Modal Dialog */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(16, 40, 62, 0.56);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 40;
+      padding: 12px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      max-width: 440px;
+      max-height: 85dvh;
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 18px 16px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+      overflow-y: auto;
+      animation: fadeSlideUp 0.24s ease both;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: calc(18px * var(--font-scale));
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .close-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #f4f8fc;
+      color: var(--text-main);
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .check-item input {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: var(--teal);
+      flex-shrink: 0;
+    }
+
+    .check-item.checked {
+      background: var(--mint-bg);
+      border-color: var(--mint-border);
+    }
+
+    .check-item span {
+      font-size: calc(14.5px * var(--font-scale));
+      line-height: 1.45;
+    }
+
+    .check-result {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-align: center;
+      font-size: calc(14.5px * var(--font-scale));
+      background: #eef5fb;
+      color: var(--primary-dark);
+    }
+
+    .check-result.done {
+      background: var(--mint-bg);
+      color: #1f6337;
+      border: 1px solid var(--mint-border);
+    }
+
+    .phone-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .phone-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f4f9fd;
+      border: 1px solid var(--border);
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: calc(14.5px * var(--font-scale));
+    }
+
+    .phone-link small {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeScaleIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 480px) {
+      .app-shell {
+        padding: 0;
+        height: 100dvh;
+      }
+      .deck-frame {
+        border-radius: 0;
+        height: 100dvh;
+        min-height: 0;
+        max-height: 100dvh;
+        border: none;
+      }
+      .art-stage {
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <main class="deck-frame" id="deckFrame" aria-label="電腦斷層攝影（有注射對比劑）行前必看須知">
+      <!-- Top Progress & Controls -->
+      <header class="top-bar">
+        <div class="progress-track" aria-hidden="true">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="top-row">
+          <nav class="step-dots" id="stepDots" aria-label="簡報頁碼"></nav>
+          <div class="top-actions">
+            <button type="button" class="pill-btn" id="fontToggleBtn" title="切換較大字體">A+ 大字</button>
+            <button type="button" class="pill-btn" id="autoPlayBtn" title="播完本頁語音自動翻下一頁">▶ 自動連播</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Audio Bar -->
+      <div class="audio-strip">
+        <span class="audio-status" id="audioStatus">點擊右側按鈕可收聽國語語音說明</span>
+        <div class="audio-controls">
+          <button type="button" class="audio-btn" id="playAudioBtn">🔊 播放語音</button>
+        </div>
+      </div>
+
+      <!-- Slide Viewport -->
+      <section class="slide-viewport" id="slideViewport" aria-live="polite"></section>
+
+      <!-- Bottom Navigation -->
+      <footer class="bottom-nav">
+        <button type="button" class="nav-btn" id="prevBtn">◀ 上一頁</button>
+        <button type="button" class="nav-btn primary" id="nextBtn">下一頁 ▶</button>
+      </footer>
+
+      <!-- Modal Overlay -->
+      <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-sheet">
+          <div class="modal-head">
+            <h2 class="modal-title" id="modalTitle">標題</h2>
+            <button type="button" class="close-btn" id="modalCloseBtn" aria-label="關閉">×</button>
+          </div>
+          <div id="modalContent"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const SLIDES = [
+      {
+        badge: "第 1 / 6 頁｜適用對象確認",
+        title: "打對比劑的電腦斷層：看懂這幾步不白跑！",
+        image: "./images/scene_01_intro.jpg",
+        crop: { top: 0.26, span: 0.47 },
+        audio: "./audio/scene_01.mp3",
+        voiceText: "您即將接受需要注射對比劑的電腦斷層檢查。花一點時間看懂這幾個重點，當天檢查就會更順利。",
+        cards: [
+          {
+            tone: "mint",
+            icon: "💉",
+            heading: "本簡報專為「有注射對比劑」檢查設計",
+            text: "依時間順序做好準備，能避免當天抽血不足、禁食錯誤而被退件改期。"
+          },
+          {
+            tone: "default",
+            icon: "👆",
+            heading: "操作方式：像翻簡報一樣滑動",
+            text: "可點下方「下一頁」或左右滑動閱讀；上方可開啟「A+ 大字」與語音導覽。"
+          }
+        ],
+        actions: [
+          { label: "沒注射對比劑？點我看 4 點簡版提醒", type: "openModal", target: "nonContrast" }
+        ]
+      },
+      {
+        badge: "第 2 / 6 頁｜提前幾天先確認",
+        title: "最常被退檢的關鍵：抽血報告與腎臟用藥",
+        image: "./images/scene_02_blood_kidney.jpg",
+        crop: { top: 0.28, span: 0.56 },
+        audio: "./audio/scene_02.mp3",
+        voiceText: "首先，請確認您有受檢前三個月內的血清肌酸酐抽血報告，外院的正式報告也可以。如果腎功能不佳，或有在吃血糖藥 Metformin，請先問開單醫師是否要停藥四十八小時。若肌酸酐接近或等於二點零且沒有被限水，檢查前十二小時起，建議每小時緩慢喝水一百毫升，持續到檢查後十二小時。",
+        cards: [
+          {
+            tone: "mint",
+            icon: "🩸",
+            heading: "3 個月內「血清肌酸酐 (Creatinine)」報告",
+            text: "檢查前務必完成抽血；若在他院或檢驗機構抽血，請攜帶<strong>三個月內正式報告</strong>（緊急受檢經醫師評估除外）。"
+          },
+          {
+            tone: "amber",
+            icon: "💊",
+            heading: "腎功能不佳 ＋ 吃血糖藥 Metformin？",
+            text: "請提前向臨床醫師確認，是否須於檢查前<strong>停藥達 48 小時</strong>（並於檢查後 48 小時確認腎功能良好再復藥）。"
+          },
+          {
+            tone: "default",
+            icon: "💧",
+            heading: "Cr 接近或等於 2.0 mg/dL（未洗腎）之成人",
+            text: "若無特別限水需求，建議檢查前 <strong>12 小時</strong>起每小時慢喝 <strong>100 ml</strong> 水，持續至檢查後 12 小時（此補水不受禁食限制）。"
+          }
+        ]
+      },
+      {
+        badge: "第 3 / 6 頁｜檢查前 4 小時",
+        title: "檢查前 4 小時：吃對與吃錯，別搞混！",
+        image: "./images/scene_03_fasting_meds.jpg",
+        crop: { top: 0.11, span: 0.74 },
+        audio: "./audio/scene_03.mp3",
+        voiceText: "檢查前四小時請禁食固體食物，但可以適量喝白開水。高血壓和心臟病等平日藥物可以照常吃，糖尿病藥物則先暫停，可準備糖果預防低血糖。未滿十二歲不需要鎮靜的小朋友，前一餐不吃固體並適量喝清水就可以；需要鎮靜的小朋友則要減眠、禁食滿四小時，並提前三十分鐘報到。",
+        twoCol: [
+          {
+            tone: "mint",
+            icon: "✅",
+            heading: "可以這樣做",
+            text: "• 適量飲用<strong>白開水</strong><br>• <strong>高血壓／心臟病</strong>等平日藥物照常服用"
+          },
+          {
+            tone: "coral",
+            icon: "❌",
+            heading: "請先暫停",
+            text: "• <strong>固體食物</strong>禁食 4 小時以上<br>• <strong>糖尿病藥物</strong>暫停（可備糖果防低血糖）"
+          }
+        ],
+        cards: [
+          {
+            tone: "default",
+            icon: "👶",
+            heading: "未滿 12 歲兒童注意",
+            text: "<strong>不需鎮靜</strong>且能正常進食者：前一餐不吃固體並鼓勵適量喝清水即可。<br><strong>需鎮靜者</strong>：檢查前應減眠、禁食滿 4 小時，並<strong>提前 30 分鐘</strong>抵達準備。"
+          }
+        ]
+      },
+      {
+        badge: "第 4 / 6 頁｜紅旗病史快篩",
+        title: "有這幾種狀況，檢查前務必告訴醫護！",
+        image: "./images/scene_04_red_flags.jpg",
+        crop: { top: 0.27, span: 0.54 },
+        audio: "./audio/scene_04.mp3",
+        voiceText: "如果您有懷孕可能、曾對藥物或對比劑過敏，或者有甲狀腺亢進、重症肌無力、嗜鉻細胞瘤、鐮刀型貧血，以及兩個月內計畫做碘一三一治療，請務必事先告訴醫師和檢查人員。另外，注射對比劑時如果感到疼痛、腫脹或灼熱，請立刻通知我們處理。",
+        cards: [
+          {
+            tone: "amber",
+            icon: "🤰",
+            heading: "懷孕或可能懷孕",
+            text: "本檢查具游離輻射，有懷孕可能者請先與安排檢查之醫師討論。"
+          },
+          {
+            tone: "coral",
+            icon: "⚠️",
+            heading: "過敏史與特殊病史（請主動告知）",
+            text: "曾對<strong>藥物／對比劑過敏</strong>；或有<strong>甲狀腺亢進</strong>（2 個月內將做<strong>碘-131</strong>治療者避免施打）、<strong>重症肌無力</strong>、<strong>嗜鉻細胞瘤</strong>、<strong>鐮刀型貧血</strong>、腎功能不良。"
+          },
+          {
+            tone: "default",
+            icon: "💉",
+            heading: "打針過程中若感覺異常，請立刻說！",
+            text: "極少數可能發生對比劑滲漏（0.1%–1.2%），若感到<strong>疼痛、腫脹、灼熱</strong>請馬上告知醫護人員。"
+          }
+        ]
+      },
+      {
+        badge: "第 5 / 6 頁｜檢查當天出門",
+        title: "出門前 3 樣檢查：穿對衣服、帶齊證件、有人陪",
+        image: "./images/scene_05_day_of_exam.jpg",
+        crop: { top: 0.22, span: 0.67 },
+        audio: "./audio/scene_05.mp3",
+        voiceText: "檢查當天請穿沒有金屬的衣服，並拿下所有金屬飾品。出門前記得帶齊預約通知單、檢查同意書、身分證和健保卡，也請務必有家屬陪同報到。",
+        cards: [
+          {
+            tone: "default",
+            icon: "👕",
+            heading: "穿無金屬服裝 ＋ 移除金屬飾品",
+            text: "避開金屬拉鍊、鈕扣、有鋼圈內衣，取下項鍊、手錶、髮夾，避免干擾影像。"
+          },
+          {
+            tone: "mint",
+            icon: "🪪",
+            heading: "帶齊 4 樣文件報到",
+            text: "<strong>① 預約通知單　② 檢查同意書　③ 身分證　④ 健保卡</strong>。"
+          },
+          {
+            tone: "amber",
+            icon: "👨‍👩‍👧",
+            heading: "務必有家屬陪同（依時報到）",
+            text: "需施打對比劑或體弱不適者需有家屬陪伴；請依應到時間報到，門診病人並請禮讓住院及急診病人。"
+          }
+        ]
+      },
+      {
+        badge: "第 6 / 6 頁｜檢查後照顧與檢核",
+        title: "檢查後 4 大提醒 ＋ 行前自我打勾",
+        image: "./images/scene_06_post_care_summary.jpg",
+        crop: { top: 0.22, span: 0.58 },
+        audio: "./audio/scene_06.mp3",
+        voiceText: "檢查後二十四小時內請避免抽血檢驗，哺乳媽媽施打後仍可正常餵奶。如果打針處有腫痛請不要熱敷，若有持續加劇疼痛或水泡麻木請立刻就醫。最後，記得檢查後七天回門診看報告！疑問請依預約通知單上的電話在上班時間聯繫我們，祝您檢查順利。",
+        slide6Overlay: {
+          title: "檢查後 4 重點",
+          sub: "7 天後看報告"
+        },
+        cards: [
+          {
+            tone: "default",
+            icon: "🚫",
+            heading: "1. 24 小時內避免抽血檢驗",
+            text: "施打對比劑後 24 小時內接受抽血可能干擾檢驗數值。"
+          },
+          {
+            tone: "mint",
+            icon: "🤱",
+            heading: "2. 哺乳媽媽可繼續哺乳",
+            text: "哺乳期婦女施打含碘對比劑後，仍可照常繼續哺乳。"
+          },
+          {
+            tone: "coral",
+            icon: "🧊",
+            heading: "3. 靜脈腫痛「勿熱敷」・惡化立即就醫",
+            text: "若有腫痛切勿熱敷，不適請回原檢查室或掛急診；若出現持續加劇疼痛、皮膚起水泡、麻木或活動困難應立即就醫。"
+          },
+          {
+            tone: "default",
+            icon: "📅",
+            heading: "4. 檢查後 7 天看報告",
+            text: "請自行約掛門診或依醫師原預約門診時間回診查看檢查結果。"
+          }
+        ],
+        actions: [
+          { label: "☑️ 點開：出門前 5 項打勾確認表", type: "openModal", target: "checklist", solid: true },
+          { label: "📞 檢查單位電話（上班日 9:00–17:00）", type: "openModal", target: "contacts" }
+        ]
+      }
+    ];
+
+    const state = {
+      currentIndex: 0,
+      visited: new Set([0]),
+      largeText: false,
+      autoPlay: false,
+      isPlaying: false,
+      playToken: 0,
+      currentAudio: null,
+      checkedItems: new Set()
+    };
+
+    const el = {
+      progressFill: document.getElementById("progressFill"),
+      stepDots: document.getElementById("stepDots"),
+      fontToggleBtn: document.getElementById("fontToggleBtn"),
+      autoPlayBtn: document.getElementById("autoPlayBtn"),
+      audioStatus: document.getElementById("audioStatus"),
+      playAudioBtn: document.getElementById("playAudioBtn"),
+      slideViewport: document.getElementById("slideViewport"),
+      prevBtn: document.getElementById("prevBtn"),
+      nextBtn: document.getElementById("nextBtn"),
+      deckFrame: document.getElementById("deckFrame"),
+      modalBackdrop: document.getElementById("modalBackdrop"),
+      modalTitle: document.getElementById("modalTitle"),
+      modalContent: document.getElementById("modalContent"),
+      modalCloseBtn: document.getElementById("modalCloseBtn")
+    };
+
+    const audioPlayer = new Audio();
+
+    function stopAllAudio() {
+      state.playToken += 1;
+      audioPlayer.onended = null;
+      audioPlayer.onerror = null;
+      audioPlayer.pause();
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+      state.isPlaying = false;
+      updateAudioUI("點擊右側按鈕可收聽國語語音說明", false);
+    }
+
+    function updateAudioUI(statusText, playing) {
+      el.audioStatus.textContent = statusText;
+      el.playAudioBtn.textContent = playing ? "⏸ 停止語音" : "🔊 播放語音";
+      el.playAudioBtn.classList.toggle("playing", playing);
+    }
+
+    function onAudioCompleted(token) {
+      if (token !== state.playToken) return;
+      state.isPlaying = false;
+      if (state.autoPlay && state.currentIndex < SLIDES.length - 1) {
+        updateAudioUI("本頁播放完畢，即將自動翻下一頁…", false);
+        setTimeout(() => {
+          if (token === state.playToken && state.autoPlay) {
+            goToSlide(state.currentIndex + 1, { autoStartAudio: true });
+          }
+        }, 700);
+      } else if (state.autoPlay && state.currentIndex === SLIDES.length - 1) {
+        state.autoPlay = false;
+        el.autoPlayBtn.classList.remove("active");
+        el.autoPlayBtn.textContent = "▶ 自動連播";
+        updateAudioUI("✅ 全部 6 頁語音導覽已播放完畢", false);
+      } else {
+        updateAudioUI("本頁語音已播完，可點「下一頁」繼續", false);
+      }
+    }
+
+    function speakFallbackTTS(text, token) {
+      if (!("speechSynthesis" in window)) {
+        state.isPlaying = false;
+        updateAudioUI("⚠️ 請放入 audio/scene_0X.mp3 或改看下方文字", false);
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "zh-TW";
+      utter.rate = 0.96;
+      const voices = window.speechSynthesis.getVoices();
+      const twVoice = voices.find((v) => v.lang && v.lang.toLowerCase().includes("zh-tw"))
+        || voices.find((v) => v.lang && v.lang.toLowerCase().startsWith("zh"));
+      if (twVoice) utter.voice = twVoice;
+
+      utter.onstart = () => {
+        if (token !== state.playToken) return;
+        state.isPlaying = true;
+        updateAudioUI("🗣️ 瀏覽器預覽朗讀中（放入 MP3 可自動替換）", true);
+      };
+      utter.onend = () => onAudioCompleted(token);
+      utter.onerror = () => {
+        if (token !== state.playToken) return;
+        state.isPlaying = false;
+        updateAudioUI("瀏覽器語音未能播放，請直接閱讀圖卡文字", false);
+      };
+      state.isPlaying = true;
+      updateAudioUI("🗣️ 準備瀏覽器預覽朗讀…", true);
+      window.speechSynthesis.speak(utter);
+    }
+
+    function playCurrentAudio() {
+      const slide = SLIDES[state.currentIndex];
+      stopAllAudio();
+      const token = state.playToken;
+      let handledFailure = false;
+
+      audioPlayer.src = slide.audio;
+      audioPlayer.currentTime = 0;
+      state.isPlaying = true;
+      updateAudioUI("正在載入 AI 配音…", true);
+
+      const handleLoadFailure = () => {
+        if (handledFailure || token !== state.playToken) return;
+        handledFailure = true;
+        speakFallbackTTS(slide.voiceText, token);
+      };
+
+      audioPlayer.onended = () => onAudioCompleted(token);
+      audioPlayer.onerror = handleLoadFailure;
+
+      const playPromise = audioPlayer.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            if (token !== state.playToken) return;
+            updateAudioUI(`🔊 AI 配音播放中（第 ${state.currentIndex + 1} 頁）`, true);
+          })
+          .catch((err) => {
+            if (token !== state.playToken) return;
+            if (err && err.name === "NotAllowedError") {
+              handledFailure = true;
+              state.isPlaying = false;
+              updateAudioUI("瀏覽器暫停自動播放，請點右側「🔊 播放語音」", false);
+              return;
+            }
+            handleLoadFailure();
+          });
+      }
+    }
+
+    function renderCardHTML(card) {
+      const toneClass = card.tone && card.tone !== "default" ? `tone-${card.tone}` : "";
+      return `
+        <article class="info-card ${toneClass}">
+          <div class="card-icon" aria-hidden="true">${card.icon}</div>
+          <div class="card-body">
+            <h3 class="card-heading">${card.heading}</h3>
+            <p class="card-text">${card.text}</p>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderSlide() {
+      const slide = SLIDES[state.currentIndex];
+      const pct = ((state.currentIndex + 1) / SLIDES.length) * 100;
+      el.progressFill.style.width = `${pct}%`;
+
+      // Render step dots
+      el.stepDots.innerHTML = SLIDES.map((_, idx) => {
+        const cls = [
+          "step-dot",
+          idx === state.currentIndex ? "active" : "",
+          state.visited.has(idx) ? "visited" : ""
+        ].filter(Boolean).join(" ");
+        return `<button type="button" class="${cls}" data-step="${idx}" aria-label="前往第 ${idx + 1} 頁">${idx + 1}</button>`;
+      }).join("");
+
+      const twoColHTML = slide.twoCol
+        ? `<div class="two-col">${slide.twoCol.map(renderCardHTML).join("")}</div>`
+        : "";
+      const cardsHTML = (slide.cards || []).map(renderCardHTML).join("");
+      const actionsHTML = slide.actions
+        ? `<div class="inline-actions">${slide.actions.map((act) =>
+            `<button type="button" class="action-chip ${act.solid ? "solid" : ""}" data-modal="${act.target}">${act.label}</button>`
+          ).join("")}</div>`
+        : "";
+      const overlayHTML = slide.slide6Overlay
+        ? `<div class="slide6-card-label"><strong>${slide.slide6Overlay.title}</strong><span>${slide.slide6Overlay.sub}</span></div>`
+        : "";
+
+      el.slideViewport.innerHTML = `
+        <div class="slide-header">
+          <span class="slide-badge">${slide.badge}</span>
+          <h1 class="slide-title">${slide.title}</h1>
+        </div>
+
+        <div class="art-stage" style="--top: ${slide.crop.top}; --span: ${slide.crop.span};">
+          <div class="art-frame">
+            <img src="${slide.image}" alt="${slide.title}" loading="eager" />
+            ${overlayHTML}
+          </div>
+        </div>
+
+        <div class="cards-stack">
+          ${twoColHTML}
+          ${cardsHTML}
+        </div>
+
+        ${actionsHTML}
+
+        <details class="caption-box">
+          <summary>📝 展開本頁完整配音文字稿</summary>
+          <p>${slide.voiceText}</p>
+        </details>
+      `;
+
+      el.slideViewport.scrollTop = 0;
+
+      // Update nav buttons
+      el.prevBtn.disabled = state.currentIndex === 0;
+      if (state.currentIndex === SLIDES.length - 1) {
+        el.nextBtn.textContent = "☑️ 完成前打勾確認";
+        el.nextBtn.className = "nav-btn finish";
+      } else {
+        el.nextBtn.textContent = "下一頁 ▶";
+        el.nextBtn.className = "nav-btn primary";
+      }
+    }
+
+    function goToSlide(index, options = {}) {
+      if (index < 0 || index >= SLIDES.length) return;
+      stopAllAudio();
+      state.currentIndex = index;
+      state.visited.add(index);
+      renderSlide();
+      if (options.autoStartAudio) {
+        playCurrentAudio();
+      }
+    }
+
+    const CHECKLIST_ITEMS = [
+      "已確認有<strong>受檢前 3 個月內</strong>之血清肌酸酐 (Creatinine) 抽血報告。",
+      "若有腎功能不佳或服用 <strong>Metformin</strong>，已向醫師確認是否須停藥 48 小時（或 Cr≈2.0 已規劃前 12 小時補水）。",
+      "檢查前 <strong>4 小時不吃固體食物</strong>、糖尿病藥暫停（可備糖果），高血壓/心臟病藥與白開水正常使用。",
+      "當天已穿<strong>無金屬衣物</strong>並卸除飾品，且有<strong>家屬陪同</strong>。",
+      "已帶齊 4 樣文件：<strong>預約通知單、檢查同意書、身分證、健保卡</strong>。"
+    ];
+
+    function openModal(type) {
+      if (type === "nonContrast") {
+        el.modalTitle.textContent = "沒有注射對比劑｜精簡 4 點提醒";
+        el.modalContent.innerHTML = `
+          <div class="cards-stack">
+            <div class="info-card tone-mint"><div class="card-icon">👕</div><div class="card-body"><h3 class="card-heading">1. 穿無金屬服裝、移除飾品</h3><p class="card-text">減少金屬對影像的干擾。</p></div></div>
+            <div class="info-card tone-amber"><div class="card-icon">🤰</div><div class="card-body"><h3 class="card-heading">2. 有懷孕可能請先告知醫師</h3><p class="card-text">檢查具游離輻射，有疑慮請與安排檢查醫師討論。</p></div></div>
+            <div class="info-card"><div class="card-icon">🪪</div><div class="card-body"><h3 class="card-heading">3. 依時報到、帶齊 4 樣文件</h3><p class="card-text">預約通知單、檢查同意書、身分證、健保卡（門診病人請禮讓住院及急診病人）。</p></div></div>
+            <div class="info-card"><div class="card-icon">👶</div><div class="card-body"><h3 class="card-heading">4. 若為需鎮靜之未滿 12 歲兒童</h3><p class="card-text">仍須減眠、禁食滿 4 小時，並提前 30 分鐘抵達檢查室；檢查後 7 天回門診看結果。</p></div></div>
+          </div>
+        `;
+      } else if (type === "contacts") {
+        el.modalTitle.textContent = "檢查單位聯絡資訊（上班日 9:00–17:00）";
+        el.modalContent.innerHTML = `
+          <p class="card-text" style="margin-bottom: 8px;">如對用藥停藥、禁食時間或報到流程有疑問，請依您預約單上的檢查院區撥打聯繫：</p>
+          <div class="phone-list">
+            <a class="phone-link" href="tel:0223562301"><span>🏥 東址檢查單位</span><small>02-23562301</small></a>
+            <a class="phone-link" href="tel:0223123456"><span>🧸 兒醫檢查單位</span><small>02-23123456 分機 270323 / 270335</small></a>
+            <a class="phone-link" href="tel:0223123456"><span>🏢 健康大樓</span><small>(02)23123456 分機 278142</small></a>
+          </div>
+        `;
+      } else if (type === "checklist") {
+        el.modalTitle.textContent = "出門前 5 項打勾確認";
+        renderChecklistModal();
+      }
+      el.modalBackdrop.classList.add("open");
+    }
+
+    function updateChecklistSummary() {
+      const resultEl = document.getElementById("checkResultBox");
+      if (!resultEl) return;
+      const count = state.checkedItems.size;
+      const done = count === CHECKLIST_ITEMS.length;
+      resultEl.className = `check-result ${done ? "done" : ""}`;
+      resultEl.textContent = done
+        ? "✅ 太棒了！5 項皆已確認，祝您檢查順利！"
+        : `已完成 ${count} / ${CHECKLIST_ITEMS.length} 項自我確認`;
+    }
+
+    function renderChecklistModal() {
+      const listHTML = CHECKLIST_ITEMS.map((text, idx) => {
+        const checked = state.checkedItems.has(idx);
+        return `
+          <label class="check-item ${checked ? "checked" : ""}">
+            <input type="checkbox" data-check-idx="${idx}" ${checked ? "checked" : ""} />
+            <span>${text}</span>
+          </label>
+        `;
+      }).join("");
+      el.modalContent.innerHTML = `
+        ${listHTML}
+        <div class="check-result" id="checkResultBox"></div>
+      `;
+      updateChecklistSummary();
+    }
+
+    function closeModal() {
+      el.modalBackdrop.classList.remove("open");
+    }
+
+    // Event bindings
+    el.stepDots.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-step]");
+      if (!btn) return;
+      goToSlide(Number(btn.dataset.step), { autoStartAudio: state.autoPlay });
+    });
+
+    el.slideViewport.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-modal]");
+      if (!btn) return;
+      openModal(btn.dataset.modal);
+    });
+
+    el.modalContent.addEventListener("change", (e) => {
+      if (!e.target.matches("[data-check-idx]")) return;
+      const idx = Number(e.target.dataset.checkIdx);
+      const label = e.target.closest(".check-item");
+      if (e.target.checked) {
+        state.checkedItems.add(idx);
+        if (label) label.classList.add("checked");
+      } else {
+        state.checkedItems.delete(idx);
+        if (label) label.classList.remove("checked");
+      }
+      updateChecklistSummary();
+    });
+
+    el.prevBtn.addEventListener("click", () => {
+      goToSlide(state.currentIndex - 1, { autoStartAudio: state.autoPlay });
+    });
+
+    el.nextBtn.addEventListener("click", () => {
+      if (state.currentIndex === SLIDES.length - 1) {
+        openModal("checklist");
+      } else {
+        goToSlide(state.currentIndex + 1, { autoStartAudio: state.autoPlay });
+      }
+    });
+
+    el.fontToggleBtn.addEventListener("click", () => {
+      state.largeText = !state.largeText;
+      document.body.classList.toggle("large-text", state.largeText);
+      el.fontToggleBtn.classList.toggle("active", state.largeText);
+      el.fontToggleBtn.textContent = state.largeText ? "A- 標準字" : "A+ 大字";
+    });
+
+    el.playAudioBtn.addEventListener("click", () => {
+      if (state.isPlaying) {
+        state.autoPlay = false;
+        el.autoPlayBtn.classList.remove("active");
+        el.autoPlayBtn.textContent = "▶ 自動連播";
+        stopAllAudio();
+      } else {
+        playCurrentAudio();
+      }
+    });
+
+    el.autoPlayBtn.addEventListener("click", () => {
+      state.autoPlay = !state.autoPlay;
+      el.autoPlayBtn.classList.toggle("active", state.autoPlay);
+      el.autoPlayBtn.textContent = state.autoPlay ? "⏹ 停止連播" : "▶ 自動連播";
+      if (state.autoPlay) {
+        playCurrentAudio();
+      } else {
+        stopAllAudio();
+      }
+    });
+
+    el.modalCloseBtn.addEventListener("click", closeModal);
+    el.modalBackdrop.addEventListener("click", (e) => {
+      if (e.target === el.modalBackdrop) closeModal();
+    });
+
+    // Keyboard navigation
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeModal();
+        return;
+      }
+      if (el.modalBackdrop.classList.contains("open")) return;
+      if (e.key === "ArrowRight") goToSlide(state.currentIndex + 1, { autoStartAudio: state.autoPlay });
+      if (e.key === "ArrowLeft") goToSlide(state.currentIndex - 1, { autoStartAudio: state.autoPlay });
+    });
+
+    // Touch swipe navigation on mobile
+    let touchStartX = 0;
+    let touchStartY = 0;
+    el.slideViewport.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].clientX;
+      touchStartY = e.changedTouches[0].clientY;
+    }, { passive: true });
+
+    el.slideViewport.addEventListener("touchend", (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+        if (dx < 0 && state.currentIndex < SLIDES.length - 1) {
+          goToSlide(state.currentIndex + 1, { autoStartAudio: state.autoPlay });
+        } else if (dx > 0 && state.currentIndex > 0) {
+          goToSlide(state.currentIndex - 1, { autoStartAudio: state.autoPlay });
+        }
+      }
+    }, { passive: true });
+
+    // Preload voices list on browsers that populate asynchronously
+    if ("speechSynthesis" in window && window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = () => {};
+    }
+
+    renderSlide();
+  </script>
+</body>
+</html>
