@@ -726,9 +726,9 @@
       {
         badge: "第 1 / 6 頁｜適用對象確認",
         title: "打對比劑的電腦斷層：看懂這幾步不白跑！",
-        image: "./images/scene_01_intro.jpg",
+        image: "./images/scene_01_intro.jpg?v=4",
         crop: { top: 0.26, span: 0.47 },
-        audio: "./audio/scene_01.mp3",
+        audio: "./audio/scene_01.mp3?v=4",
         voiceText: "您即將接受需要注射對比劑的電腦斷層檢查。花一點時間看懂這幾個重點，當天檢查就會更順利。",
         cards: [
           {
@@ -751,9 +751,9 @@
       {
         badge: "第 2 / 6 頁｜提前幾天先確認",
         title: "最常被退檢的關鍵：抽血報告與腎臟用藥",
-        image: "./images/scene_02_blood_kidney.jpg",
+        image: "./images/scene_02_blood_kidney.jpg?v=4",
         crop: { top: 0.28, span: 0.56 },
-        audio: "./audio/scene_02.mp3",
+        audio: "./audio/scene_02.mp3?v=4",
         voiceText: "首先，請確認您有受檢前三個月內的血清肌酸酐抽血報告，外院的正式報告也可以。如果腎功能不佳，或有在吃血糖藥 Metformin，請先問開單醫師是否要停藥四十八小時。若肌酸酐接近或等於二點零且沒有被限水，檢查前十二小時起，建議每小時緩慢喝水一百毫升，持續到檢查後十二小時。",
         cards: [
           {
@@ -779,9 +779,9 @@
       {
         badge: "第 3 / 6 頁｜檢查前 4 小時",
         title: "檢查前 4 小時：吃對與吃錯，別搞混！",
-        image: "./images/scene_03_fasting_meds.jpg",
+        image: "./images/scene_03_fasting_meds.jpg?v=4",
         crop: { top: 0.11, span: 0.74 },
-        audio: "./audio/scene_03.mp3",
+        audio: "./audio/scene_03.mp3?v=4",
         voiceText: "檢查前四小時請禁食固體食物，但可以適量喝白開水。高血壓和心臟病等平日藥物可以照常吃，糖尿病藥物則先暫停，可準備糖果預防低血糖。未滿十二歲不需要鎮靜的小朋友，前一餐不吃固體並適量喝清水就可以；需要鎮靜的小朋友則要減眠、禁食滿四小時，並提前三十分鐘報到。",
         twoCol: [
           {
@@ -809,9 +809,9 @@
       {
         badge: "第 4 / 6 頁｜紅旗病史快篩",
         title: "有這幾種狀況，檢查前務必告訴醫護！",
-        image: "./images/scene_04_red_flags.jpg",
+        image: "./images/scene_04_red_flags.jpg?v=4",
         crop: { top: 0.27, span: 0.54 },
-        audio: "./audio/scene_04.mp3",
+        audio: "./audio/scene_04.mp3?v=4",
         voiceText: "如果您有懷孕可能、曾對藥物或對比劑過敏，或者有甲狀腺亢進、重症肌無力、嗜鉻細胞瘤、鐮刀型貧血，以及兩個月內計畫做碘一三一治療，請務必事先告訴醫師和檢查人員。另外，注射對比劑時如果感到疼痛、腫脹或灼熱，請立刻通知我們處理。",
         cards: [
           {
@@ -837,9 +837,9 @@
       {
         badge: "第 5 / 6 頁｜檢查當天出門",
         title: "出門前 3 樣檢查：穿對衣服、帶齊證件、有人陪",
-        image: "./images/scene_05_day_of_exam.jpg",
+        image: "./images/scene_05_day_of_exam.jpg?v=4",
         crop: { top: 0.22, span: 0.67 },
-        audio: "./audio/scene_05.mp3",
+        audio: "./audio/scene_05.mp3?v=4",
         voiceText: "檢查當天請穿沒有金屬的衣服，並拿下所有金屬飾品。出門前記得帶齊預約通知單、檢查同意書、身分證和健保卡，也請務必有家屬陪同報到。",
         cards: [
           {
@@ -865,9 +865,9 @@
       {
         badge: "第 6 / 6 頁｜檢查後照顧與檢核",
         title: "檢查後 4 大提醒 ＋ 行前自我打勾",
-        image: "./images/scene_06_post_care_summary.jpg",
+        image: "./images/scene_06_post_care_summary.jpg?v=4",
         crop: { top: 0.22, span: 0.58 },
-        audio: "./audio/scene_06.mp3",
+        audio: "./audio/scene_06.mp3?v=4",
         voiceText: "檢查後二十四小時內請避免抽血檢驗，哺乳媽媽施打後仍可正常餵奶。如果打針處有腫痛請不要熱敷，若有持續加劇疼痛或水泡麻木請立刻就醫。最後，記得檢查後七天回門診看報告！疑問請依預約通知單上的電話在上班時間聯繫我們，祝您檢查順利。",
         slide6Overlay: {
           title: "檢查後 4 重點",
@@ -960,14 +960,15 @@
       return p;
     }
 
-    function preloadAllAssets() {
-      SLIDES.forEach((s) => {
-        const img = new Image();
-        img.src = s.image;
-      });
-      if (window.location.protocol === "file:") return;
-      // Preload in slide order so Slide 1 & 2 finish immediately
-      SLIDES.reduce((chain, s) => chain.then(() => prefetchAudio(s.audio)), Promise.resolve());
+    function prefetchNextSlide(currentIdx) {
+      const nextIdx = currentIdx + 1;
+      if (nextIdx >= SLIDES.length) return;
+      const nextSlide = SLIDES[nextIdx];
+      const img = new Image();
+      img.src = nextSlide.image;
+      if (window.location.protocol !== "file:") {
+        prefetchAudio(nextSlide.audio);
+      }
     }
 
     function stopAllAudio() {
@@ -1166,6 +1167,7 @@
       state.currentIndex = index;
       state.visited.add(index);
       renderSlide();
+      prefetchNextSlide(index);
       if (shouldContinueAudio) {
         playCurrentAudio();
       }
@@ -1349,7 +1351,7 @@
     }
 
     renderSlide();
-    preloadAllAssets();
+    setTimeout(() => prefetchNextSlide(0), 250);
   </script>
 </body>
 </html>
