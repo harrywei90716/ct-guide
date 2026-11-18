@@ -935,6 +935,40 @@
     };
 
     const audioPlayer = new Audio();
+    const audioBlobCache = new Map();
+    const audioFetchInFlight = new Map();
+
+    function prefetchAudio(url) {
+      if (window.location.protocol === "file:") return Promise.resolve(url);
+      if (audioBlobCache.has(url)) return Promise.resolve(audioBlobCache.get(url));
+      if (audioFetchInFlight.has(url)) return audioFetchInFlight.get(url);
+
+      const p = fetch(url)
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.blob();
+        })
+        .then((blob) => {
+          const blobUrl = URL.createObjectURL(blob);
+          audioBlobCache.set(url, blobUrl);
+          return blobUrl;
+        })
+        .catch(() => url)
+        .finally(() => audioFetchInFlight.delete(url));
+
+      audioFetchInFlight.set(url, p);
+      return p;
+    }
+
+    function preloadAllAssets() {
+      SLIDES.forEach((s) => {
+        const img = new Image();
+        img.src = s.image;
+      });
+      if (window.location.protocol === "file:") return;
+      // Preload in slide order so Slide 1 & 2 finish immediately
+      SLIDES.reduce((chain, s) => chain.then(() => prefetchAudio(s.audio)), Promise.resolve());
+    }
 
     function stopAllAudio() {
       state.playToken += 1;
@@ -958,12 +992,12 @@
       if (token !== state.playToken) return;
       state.isPlaying = false;
       if (state.autoPlay && state.currentIndex < SLIDES.length - 1) {
-        updateAudioUI("本頁播放完畢，即將自動翻下一頁…", false);
+        updateAudioUI("即將自動翻下一頁…", false);
         setTimeout(() => {
           if (token === state.playToken && state.autoPlay) {
             goToSlide(state.currentIndex + 1, { autoStartAudio: true });
           }
-        }, 700);
+        }, 200);
       } else if (state.autoPlay && state.currentIndex === SLIDES.length - 1) {
         state.autoPlay = false;
         el.autoPlayBtn.classList.remove("active");
@@ -1011,10 +1045,10 @@
       const token = state.playToken;
       let handledFailure = false;
 
-      audioPlayer.src = slide.audio;
-      audioPlayer.currentTime = 0;
+      const cachedSrc = audioBlobCache.get(slide.audio);
+      audioPlayer.src = cachedSrc || slide.audio;
       state.isPlaying = true;
-      updateAudioUI("正在載入 AI 配音…", true);
+      updateAudioUI(cachedSrc ? `🔊 AI 配音播放中（第 ${state.currentIndex + 1} 頁）` : "正在載入 AI 配音…", true);
 
       const handleLoadFailure = () => {
         if (handledFailure || token !== state.playToken) return;
@@ -1127,11 +1161,12 @@
 
     function goToSlide(index, options = {}) {
       if (index < 0 || index >= SLIDES.length) return;
+      const shouldContinueAudio = Boolean(options.autoStartAudio || state.autoPlay || state.isPlaying);
       stopAllAudio();
       state.currentIndex = index;
       state.visited.add(index);
       renderSlide();
-      if (options.autoStartAudio) {
+      if (shouldContinueAudio) {
         playCurrentAudio();
       }
     }
@@ -1314,6 +1349,7 @@
     }
 
     renderSlide();
+    preloadAllAssets();
   </script>
 </body>
 </html>
